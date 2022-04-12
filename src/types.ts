@@ -26,3 +26,15 @@ type User = {
     bs: string;
   };
 };
+
+type Post = {
+  userId: number;
+  id: string;
+  title: string;
+  body: string;
+};
+
+type Posts = {
+  user: User;
+  posts: Array<Post>;
+};

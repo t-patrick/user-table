@@ -1,45 +1,22 @@
 import React from 'react';
+import { Dispatch } from 'react';
+import { SetStateAction } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import styles from './UserTable.module.css';
+import { columns } from './UserTable.utils';
 
-const mockColumns: Array<ColumnType> = [
-  {
-    columnName: 'Name',
-    apiKey: 'name',
-  },
-  {
-    columnName: 'Email',
-    apiKey: 'email',
-  },
-  {
-    columnName: 'City',
-    apiKey: 'address.city',
-  },
-  {
-    columnName: 'Company',
-    apiKey: 'company.name',
-  },
-];
+// TODO Set up prop types
 
-function UserTable() {
+function UserTable({
+  users,
+  setInPostsMode,
+}: {
+  users: Array<User>;
+  setInPostsMode: Dispatch<SetStateAction<boolean>>;
+}) {
   const [selectedColumns, setSelectedColumns] =
-    useState<Array<ColumnType>>(mockColumns);
-
-  const [users, setUsers] = useState<Array<User>>([]);
-
-  useEffect(() => {
-    const getUsers = async () => {
-      const response = await fetch(
-        'https://jsonplaceholder.typicode.com/users'
-      );
-      const users = await response.json();
-
-      setUsers(users);
-    };
-
-    getUsers();
-  }, []);
+    useState<Array<ColumnType>>(columns);
 
   const accessValueFromApiString = (user: User, apiString: string) => {
     if (!apiString.includes('.')) return user[apiString as keyof User];
@@ -55,6 +32,10 @@ function UserTable() {
     return val;
   };
 
+  const openUser = () => {
+    setInPostsMode(true);
+  };
+
   return (
     <table className={styles.table}>
       <thead>
@@ -68,7 +49,11 @@ function UserTable() {
             return (
               <tr>
                 {selectedColumns.map((col) => {
-                  return <td>{accessValueFromApiString(user, col.apiKey)}</td>;
+                  return (
+                    <td onClick={openUser}>
+                      {accessValueFromApiString(user, col.apiKey)}
+                    </td>
+                  );
                 })}
               </tr>
             );
