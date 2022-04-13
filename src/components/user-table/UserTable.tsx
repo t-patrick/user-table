@@ -1,7 +1,6 @@
 import React from 'react';
 import { Dispatch } from 'react';
 import { SetStateAction } from 'react';
-import { useEffect } from 'react';
 import { useState } from 'react';
 import styles from './UserTable.module.css';
 import { columns } from './UserTable.utils';
@@ -22,7 +21,6 @@ function UserTable({
     if (!apiString.includes('.')) return user[apiString as keyof User];
 
     const arr = apiString.split('.');
-
     let val: any = user;
 
     for (const key of arr) {
