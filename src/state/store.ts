@@ -3,8 +3,9 @@ import {
   PayloadAction,
   configureStore,
   createAsyncThunk,
+  ThunkAction,
+  Action,
 } from '@reduxjs/toolkit';
-// import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 
 export const fetchUsers = createAsyncThunk(
   'users/fetchUsers',
@@ -19,7 +20,7 @@ export const fetchPosts = createAsyncThunk(
   'posts/fetchPosts',
   async (user: User) => {
     const response = await fetch(
-      `https://jsonplaceholder.typicode.com/posts/userId=${user.id}`
+      `https://jsonplaceholder.typicode.com/posts?userId=${user.id}`
     );
     const posts = await response.json();
     return {
@@ -39,7 +40,7 @@ const users = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchUsers.fulfilled, (state, action) => {
-      store.dispatch(users.actions.setUsers(action.payload));
+      return (state = action.payload);
     });
   },
 });
@@ -57,7 +58,7 @@ const posts = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchPosts.fulfilled, (state, action) => {
-      store.dispatch(posts.actions.setPosts(action.payload));
+      return (state = action.payload);
     });
   },
 });
@@ -71,14 +72,14 @@ export const store = configureStore({
   reducer,
   middleware: (getDefaultMiddleware) => [...getDefaultMiddleware()],
 });
-// export type AppDispatch = typeof store.dispatch;
-// export type RootState = ReturnType<typeof store.getState>;
-// export type AppThunk<ReturnType = void> = ThunkAction<
-//   ReturnType,
-//   RootState,
-//   unknown,
-//   Action<string>
-// >;
+export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>;
+export type AppThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  RootState,
+  unknown,
+  Action<string>
+>;
 
 /* 
   Quick plan for reducers: 

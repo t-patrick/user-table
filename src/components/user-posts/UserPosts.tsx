@@ -1,6 +1,7 @@
 import React from 'react';
 import { SetStateAction } from 'react';
 import { Dispatch } from 'react';
+import { useAppSelector } from '../../state/hooks';
 import styles from './UserPosts.module.css';
 
 /* 
@@ -13,11 +14,15 @@ function UserPosts({
 }: {
   setInPostsMode: Dispatch<SetStateAction<boolean>>;
 }) {
+  const posts: Posts = useAppSelector((state) => state.posts);
+
   return (
     <div>
       <button className={styles.button} onClick={() => setInPostsMode(false)}>
         Back to Users
       </button>
+      <h2>{posts.user && posts.user.name}'s' posts:</h2>
+      {posts.posts && posts.posts.map((post) => <p>{post.body}</p>)}
     </div>
   );
 }

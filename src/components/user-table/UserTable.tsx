@@ -2,6 +2,8 @@ import React from 'react';
 import { Dispatch } from 'react';
 import { SetStateAction } from 'react';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { fetchPosts } from '../../state/store';
 import styles from './UserTable.module.css';
 import { columns } from './UserTable.utils';
 
@@ -17,6 +19,7 @@ function UserTable({
   const [selectedColumns, setSelectedColumns] =
     useState<Array<ColumnType>>(columns);
 
+  const dispatch = useDispatch();
   const accessValueFromApiString = (user: User, apiString: string) => {
     if (!apiString.includes('.')) return user[apiString as keyof User];
 
@@ -30,7 +33,8 @@ function UserTable({
     return val;
   };
 
-  const openUser = () => {
+  const openUser = (user: User) => () => {
+    dispatch(fetchPosts(user));
     setInPostsMode(true);
   };
 
@@ -48,7 +52,7 @@ function UserTable({
               <tr>
                 {selectedColumns.map((col) => {
                   return (
-                    <td onClick={openUser}>
+                    <td onClick={openUser(user)}>
                       {accessValueFromApiString(user, col.apiKey)}
                     </td>
                   );

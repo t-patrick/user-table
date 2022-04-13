@@ -8,28 +8,22 @@ import { useState } from 'react';
 import UserPosts from './components/user-posts/UserPosts';
 import UserSearch from './components/user-search/UserSearch';
 import { useEffect } from 'react';
+import { AppThunk, fetchUsers } from './state/store';
+import { useAppDispatch, useAppSelector } from './state/hooks';
+import { useDispatch } from 'react-redux';
 
 function App() {
   const [inPostsMode, setInPostsMode] = useState<boolean>(false);
-  const [currentUser, setCurrentUser] = useState<User>({} as User);
   const [filterString, setFilterString] = useState<string>('');
-  const [users, setUsers] = useState<Array<User>>([] as Array<User>);
   const [filteredUsers, setFilteredUsers] = useState<Array<User>>(
     [] as Array<User>
   );
 
+  const dispatch = useDispatch();
+  const users = useAppSelector((state) => state.users);
+
   useEffect(() => {
-    const getUsers = async () => {
-      const response = await fetch(
-        'https://jsonplaceholder.typicode.com/users'
-      );
-      const users = await response.json();
-
-      setUsers(users);
-      setFilteredUsers(users);
-    };
-
-    getUsers();
+    dispatch(fetchUsers());
   }, []);
 
   useEffect(() => {
@@ -42,10 +36,6 @@ function App() {
 
     setFilteredUsers(filtered);
   }, [users, filterString]);
-
-  // TODO setup redux
-  // There will be a current user posts
-  // Put this in an async thunk.
 
   return (
     <div className="container">
