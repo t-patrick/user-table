@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Navbar from './components/navbar/Navbar';
 import UserTable from './components/user-table/UserTable';
@@ -9,7 +8,7 @@ import UserPosts from './components/user-posts/UserPosts';
 import UserSearch from './components/user-search/UserSearch';
 import { useEffect } from 'react';
 import { useAppDispatch } from './state/hooks';
-import { fetchUsers } from './state/users';
+import { fetchUsers, users } from './state/users';
 
 function App() {
   const [inPostsMode, setInPostsMode] = useState<boolean>(false);
@@ -19,7 +18,7 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchUsers());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="container">

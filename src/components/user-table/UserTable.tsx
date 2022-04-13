@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { UserTableProps } from '../../proptypes';
 import { fetchPosts } from '../../state/posts';
 import { RootState } from '../../state/store';
+import UserRow from './UserRow';
 import styles from './UserTable.module.css';
 import {
-  accessValueFromApiString,
   columns as selectedColumns,
   filterSearchedUsers,
 } from './UserTable.utils';
+import { v1 as uuid } from 'uuid';
 
 function UserTable({ setInPostsMode, filterString }: UserTableProps) {
   const dispatch = useDispatch();
@@ -17,31 +18,34 @@ function UserTable({ setInPostsMode, filterString }: UserTableProps) {
   };
   const users = useSelector<RootState>(selectUsers) as Array<User>;
 
-  const openUserHandler = (user: User) => () => {
+  const openUserHandler = async (user: User) => {
     dispatch(fetchPosts(user));
     setInPostsMode(true);
+    window.scrollTo(0, 0);
   };
 
   return (
     <table className={styles.table}>
-      <thead>
-        {selectedColumns.map((col) => {
-          return <th>{col.columnName}</th>;
-        })}
+      <thead className={styles.thead}>
+        <tr>
+          {selectedColumns.map((col) => {
+            return (
+              <th className={styles.th} key={uuid()}>
+                {col.columnName}
+              </th>
+            );
+          })}
+        </tr>
       </thead>
       <tbody>
         {users &&
           users.map((user) => {
             return (
-              <tr>
-                {selectedColumns.map((col) => {
-                  return (
-                    <td onClick={openUserHandler(user)}>
-                      {accessValueFromApiString(user, col.apiString)}
-                    </td>
-                  );
-                })}
-              </tr>
+              <UserRow
+                user={user}
+                key={uuid()}
+                openUserHandler={openUserHandler}
+              />
             );
           })}
       </tbody>

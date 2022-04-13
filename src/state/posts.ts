@@ -1,3 +1,4 @@
+import { getPosts } from './../api/userAPI';
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 
 export const posts = createSlice({
@@ -21,10 +22,7 @@ export const posts = createSlice({
 export const fetchPosts = createAsyncThunk<Posts, User>(
   'posts/fetchPosts',
   async (user: User) => {
-    const response = await fetch(
-      `https://jsonplaceholder.typicode.com/posts?userId=${user.id}`
-    );
-    const posts = await response.json();
+    const posts = await getPosts(user);
     return {
       user,
       posts,

@@ -1,25 +1,33 @@
 import React from 'react';
-import { SetStateAction } from 'react';
-import { Dispatch } from 'react';
 import { UserPostsProps } from '../../proptypes';
 import { useAppSelector } from '../../state/hooks';
+import UserPost from './UserPost';
 import styles from './UserPosts.module.css';
-
-/* 
-  Needs Posts type: Access to all user info, and all user posts.
-  This could also be achieved by react router, passing the object as a param;
-*/
+import { v1 as uuid } from 'uuid';
 
 function UserPosts({ setInPostsMode }: UserPostsProps) {
   const posts: Posts = useAppSelector((state) => state.posts);
 
   return (
-    <div>
+    <div className={styles.container}>
       <button className={styles.button} onClick={() => setInPostsMode(false)}>
-        Back to Users
+        Back to User List
       </button>
-      <h2>{posts.user && posts.user.name}'s' posts:</h2>
-      {posts.posts && posts.posts.map((post) => <p>{post.body}</p>)}
+      <h2 className={styles.header}>
+        {posts.user && posts.user.name}'s' posts:
+      </h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Body</th>
+          </tr>
+        </thead>
+        <tbody>
+          {posts.posts &&
+            posts.posts.map((post) => <UserPost key={uuid()} post={post} />)}
+        </tbody>
+      </table>
     </div>
   );
 }

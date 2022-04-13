@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { getUsers } from '../api/userAPI';
 
 export const users = createSlice({
   name: 'user',
@@ -19,10 +20,7 @@ export const fetchUsers = createAsyncThunk<Array<User>>(
   'users/fetchUsers',
   async () => {
     try {
-      const response = await fetch(
-        'https://jsonplaceholder.typicode.com/users'
-      );
-      const users = await response.json();
+      const users = await getUsers();
       return users;
     } catch (e: any) {
       console.log(e.toString());

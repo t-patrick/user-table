@@ -1,28 +1,12 @@
-table {
+.table {
   width: 80%;
-  /* border-collapse: collapse; */
-  border-radius: 10%;
 }
 
-tr {
-  background-color: aliceblue;
-  cursor: pointer;
-  transition: background-color 0.3s ease-in-out;
-}
-
-tr:hover {
+.tr:hover {
   background-color: lightgreen;
 }
 
-td {
-  padding: 30px;
-  text-align: center;
-}
-
-thead {
-  background-color: goldenrod;
-}
-
-th {
-  padding: 10px;  
+.tr {
+  transition: background-color 0.3s ease-in-out;
+  cursor: pointer;
 }

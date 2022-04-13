@@ -29,7 +29,7 @@ type User = {
 
 type Post = {
   userId: number;
-  id: string;
+  id: number;
   title: string;
   body: string;
 };

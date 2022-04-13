@@ -1,16 +1,8 @@
 import React from 'react';
-import { SetStateAction } from 'react';
-import { Dispatch } from 'react';
-import { useState } from 'react';
+import { UserSearchProps } from '../../proptypes';
 import styles from './usersearch.module.css';
 
-function UserSearch({
-  filterString,
-  setFilterString,
-}: {
-  filterString: string;
-  setFilterString: Dispatch<SetStateAction<string>>;
-}) {
+function UserSearch({ filterString, setFilterString }: UserSearchProps) {
   return (
     <div className={styles.container}>
       <h2>Search User:</h2>

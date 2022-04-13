@@ -9,3 +9,8 @@ export type UserTableProps = {
 export type UserPostsProps = {
   setInPostsMode: Dispatch<SetStateAction<boolean>>;
 };
+
+export type UserSearchProps = {
+  filterString: string;
+  setFilterString: Dispatch<SetStateAction<string>>;
+};
