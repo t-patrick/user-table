@@ -1,19 +1,19 @@
 export const columns: Array<ColumnType> = [
   {
     columnName: 'Name',
-    apiKey: 'name',
+    apiString: 'name',
   },
   {
     columnName: 'Email',
-    apiKey: 'email',
+    apiString: 'email',
   },
   {
     columnName: 'City',
-    apiKey: 'address.city',
+    apiString: 'address.city',
   },
   {
     columnName: 'Company',
-    apiKey: 'company.name',
+    apiString: 'company.name',
   },
 ];
 
@@ -28,4 +28,12 @@ export const accessValueFromApiString = (user: User, apiString: string) => {
   }
 
   return val;
+};
+
+export const filterSearchedUsers = (
+  users: Array<User>,
+  filterString: string
+) => {
+  const regex = new RegExp('.*' + filterString + '.*', 'i');
+  return users.filter((user) => regex.test(user.name));
 };

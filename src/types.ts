@@ -1,6 +1,6 @@
 type ColumnType = {
   columnName: string;
-  apiKey: string;
+  apiString: string;
 };
 
 type User = {

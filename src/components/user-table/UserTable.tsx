@@ -1,22 +1,23 @@
 import React from 'react';
-import { Dispatch } from 'react';
-import { SetStateAction } from 'react';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { UserTableProps } from '../../proptypes';
-import { fetchPosts } from '../../state/store';
+import { fetchPosts } from '../../state/posts';
+import { RootState } from '../../state/store';
 import styles from './UserTable.module.css';
-import { accessValueFromApiString, columns } from './UserTable.utils';
+import {
+  accessValueFromApiString,
+  columns as selectedColumns,
+  filterSearchedUsers,
+} from './UserTable.utils';
 
-// TODO Set up prop types
-
-function UserTable({ users, setInPostsMode }: UserTableProps) {
-  const [selectedColumns, setSelectedColumns] =
-    useState<Array<ColumnType>>(columns);
-
+function UserTable({ setInPostsMode, filterString }: UserTableProps) {
   const dispatch = useDispatch();
+  const selectUsers = (state: RootState) => {
+    return filterSearchedUsers(state.users, filterString);
+  };
+  const users = useSelector<RootState>(selectUsers) as Array<User>;
 
-  const openUser = (user: User) => () => {
+  const openUserHandler = (user: User) => () => {
     dispatch(fetchPosts(user));
     setInPostsMode(true);
   };
@@ -35,8 +36,8 @@ function UserTable({ users, setInPostsMode }: UserTableProps) {
               <tr>
                 {selectedColumns.map((col) => {
                   return (
-                    <td onClick={openUser(user)}>
-                      {accessValueFromApiString(user, col.apiKey)}
+                    <td onClick={openUserHandler(user)}>
+                      {accessValueFromApiString(user, col.apiString)}
                     </td>
                   );
                 })}

@@ -8,34 +8,18 @@ import { useState } from 'react';
 import UserPosts from './components/user-posts/UserPosts';
 import UserSearch from './components/user-search/UserSearch';
 import { useEffect } from 'react';
-import { AppThunk, fetchUsers } from './state/store';
-import { useAppDispatch, useAppSelector } from './state/hooks';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from './state/hooks';
+import { fetchUsers } from './state/users';
 
 function App() {
   const [inPostsMode, setInPostsMode] = useState<boolean>(false);
   const [filterString, setFilterString] = useState<string>('');
-  const [filteredUsers, setFilteredUsers] = useState<Array<User>>(
-    [] as Array<User>
-  );
 
   const dispatch = useAppDispatch();
-  const users = useAppSelector((state) => state.users);
 
   useEffect(() => {
     dispatch(fetchUsers());
   }, []);
-
-  useEffect(() => {
-    filterString === ''
-      ? setFilteredUsers(users)
-      : setFilteredUsers(filterUsers());
-  }, [users, filterString]);
-
-  const filterUsers = () => {
-    const regex = new RegExp('.*' + filterString + '.*', 'i');
-    return users.filter((user) => regex.test(user.name));
-  };
 
   return (
     <div className="container">
@@ -49,7 +33,10 @@ function App() {
               filterString={filterString}
               setFilterString={setFilterString}
             />
-            <UserTable setInPostsMode={setInPostsMode} users={filteredUsers} />
+            <UserTable
+              setInPostsMode={setInPostsMode}
+              filterString={filterString}
+            />
           </>
         )}
       </div>
