@@ -19,7 +19,7 @@ function App() {
     [] as Array<User>
   );
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const users = useAppSelector((state) => state.users);
 
   useEffect(() => {
@@ -27,15 +27,15 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (filterString === '') {
-      setFilteredUsers(users);
-      return;
-    }
-    const regex = new RegExp('.*' + filterString + '.*', 'i');
-    const filtered = users.filter((user) => regex.test(user.name));
-
-    setFilteredUsers(filtered);
+    filterString === ''
+      ? setFilteredUsers(users)
+      : setFilteredUsers(filterUsers());
   }, [users, filterString]);
+
+  const filterUsers = () => {
+    const regex = new RegExp('.*' + filterString + '.*', 'i');
+    return users.filter((user) => regex.test(user.name));
+  };
 
   return (
     <div className="container">

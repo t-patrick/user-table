@@ -1,6 +1,7 @@
 import React from 'react';
 import { SetStateAction } from 'react';
 import { Dispatch } from 'react';
+import { UserPostsProps } from '../../proptypes';
 import { useAppSelector } from '../../state/hooks';
 import styles from './UserPosts.module.css';
 
@@ -9,11 +10,7 @@ import styles from './UserPosts.module.css';
   This could also be achieved by react router, passing the object as a param;
 */
 
-function UserPosts({
-  setInPostsMode,
-}: {
-  setInPostsMode: Dispatch<SetStateAction<boolean>>;
-}) {
+function UserPosts({ setInPostsMode }: UserPostsProps) {
   const posts: Posts = useAppSelector((state) => state.posts);
 
   return (

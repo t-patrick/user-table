@@ -1,3 +1,4 @@
+import { Dispatch } from 'react';
 import {
   createSlice,
   PayloadAction,
@@ -5,20 +6,28 @@ import {
   createAsyncThunk,
   ThunkAction,
   Action,
+  combineReducers,
 } from '@reduxjs/toolkit';
+import { BaseThunkAPI } from '@reduxjs/toolkit/dist/createAsyncThunk';
 
-export const fetchUsers = createAsyncThunk(
+export const fetchUsers = createAsyncThunk<Array<User>>(
   'users/fetchUsers',
-  async (thunkAPI) => {
-    const response = await fetch('https://jsonplaceholder.typicode.com/users');
-    const users = await response.json();
-    return users;
+  async () => {
+    try {
+      const response = await fetch(
+        'https://jsonplaceholder.typicode.com/users'
+      );
+      const users = await response.json();
+      return users;
+    } catch (e: any) {
+      console.log(e.toString());
+    }
   }
 );
 
-export const fetchPosts = createAsyncThunk(
+export const fetchPosts = createAsyncThunk<Posts, User>(
   'posts/fetchPosts',
-  async (user: User) => {
+  async (user: User, thunkApi) => {
     const response = await fetch(
       `https://jsonplaceholder.typicode.com/posts?userId=${user.id}`
     );
@@ -26,7 +35,7 @@ export const fetchPosts = createAsyncThunk(
     return {
       user,
       posts,
-    };
+    } as Posts;
   }
 );
 
@@ -63,17 +72,17 @@ const posts = createSlice({
   },
 });
 
-const reducer = {
+const reducer = combineReducers({
   users: users.reducer,
   posts: posts.reducer,
-};
+});
+
+export type RootState = ReturnType<typeof reducer>;
 
 export const store = configureStore({
   reducer,
-  middleware: (getDefaultMiddleware) => [...getDefaultMiddleware()],
 });
 export type AppDispatch = typeof store.dispatch;
-export type RootState = ReturnType<typeof store.getState>;
 export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,
   RootState,
