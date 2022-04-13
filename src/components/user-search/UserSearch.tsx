@@ -5,9 +5,10 @@ import styles from './usersearch.module.css';
 function UserSearch({ filterString, setFilterString }: UserSearchProps) {
   return (
     <div className={styles.container}>
-      <h2>Search User:</h2>
+      <label htmlFor="input">Search:</label>
       <input
         type="text"
+        id="input"
         className={styles.input}
         value={filterString}
         onChange={(e) => setFilterString(e.target.value)}
