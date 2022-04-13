@@ -45,7 +45,7 @@ describe('Async thunk functions correctly', () => {
   });
 
   test('fetchUsers async thunk should pass array of users on fulfilled', async () => {
-    (global.fetch as any) = jest.fn(() =>
+    (global.fetch as jest.Mock) = jest.fn(() =>
       Promise.resolve({
         json: () => Promise.resolve([mocks.user]),
       })

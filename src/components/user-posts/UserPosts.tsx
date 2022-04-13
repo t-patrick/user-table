@@ -13,8 +13,8 @@ function UserPosts({ setInPostsMode }: UserPostsProps) {
       <button className={styles.button} onClick={() => setInPostsMode(false)}>
         Back to User List
       </button>
-      <h2 className={styles.header}>
-        {posts.user && posts.user.name}'s' posts:
+      <h2 className={styles.header} data-testid="user-name">
+        {posts.user && posts.user.name}'s posts:
       </h2>
       <table>
         <thead>
