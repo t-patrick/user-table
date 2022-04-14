@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { store } from './state/store';
 import App from './App';
 
-test('renders ', () => {
+test('renders App component', () => {
   const { getByText } = render(
     <Provider store={store}>
       <App />
