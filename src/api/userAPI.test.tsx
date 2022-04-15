@@ -8,7 +8,7 @@ const mockStore = configureMockStore(middlewares);
 
 describe('fetch posts', () => {
   beforeEach(() => {
-    (global.fetch as jest.Mock) = jest.fn(() =>
+    (fetch as jest.Mock) = jest.fn(() =>
       Promise.resolve({
         json: () => Promise.resolve([]),
       })
@@ -22,7 +22,7 @@ describe('fetch posts', () => {
     const dispatch = store.dispatch as Dispatch<any>;
     dispatch(fetchPosts(user));
 
-    const mockFetch = global.fetch as jest.Mock;
+    const mockFetch = fetch as jest.Mock;
 
     expect(mockFetch.mock.calls[0][0]).toEqual(
       'https://jsonplaceholder.typicode.com/posts?userId=2'

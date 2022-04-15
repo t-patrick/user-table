@@ -38,14 +38,14 @@ test('action dispatches to mock store correctly', () => {
 });
 
 describe('Async thunk functions correctly', () => {
-  const defaultFetch = global.fetch;
+  const defaultFetch = fetch;
 
   afterAll(() => {
-    global.fetch = defaultFetch;
+    (fetch as typeof defaultFetch) = defaultFetch;
   });
 
   test('fetchUsers async thunk should pass array of users on fulfilled', async () => {
-    (global.fetch as jest.Mock) = jest.fn(() =>
+    (fetch as jest.Mock) = jest.fn(() =>
       Promise.resolve({
         json: () => Promise.resolve([mocks.user]),
       })

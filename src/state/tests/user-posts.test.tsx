@@ -42,10 +42,10 @@ test('action dispatches to mock store correctly', () => {
 });
 
 describe('Async thunk functions correctly', () => {
-  const defaultFetch = global.fetch;
+  const defaultFetch = fetch;
 
   beforeEach(() => {
-    (global.fetch as any) = jest.fn(() =>
+    (fetch as jest.Mock) = jest.fn(() =>
       Promise.resolve({
         json: () => Promise.resolve(postsMocks.posts),
       })
@@ -53,7 +53,7 @@ describe('Async thunk functions correctly', () => {
   });
 
   afterAll(() => {
-    global.fetch = defaultFetch;
+    (fetch as typeof defaultFetch) = defaultFetch;
   });
 
   test('thunk should receive Array of posts from fetch, and should return a Posts object', async () => {
