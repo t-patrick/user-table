@@ -2,7 +2,7 @@ import { fetchPosts, posts } from '../posts';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Dispatch } from '@reduxjs/toolkit';
-import { postMocks, postsMocks, userMocks } from './mocks';
+import { postsMocks, userMocks } from './mocks';
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
@@ -47,7 +47,7 @@ describe('Async thunk functions correctly', () => {
   beforeEach(() => {
     (global.fetch as any) = jest.fn(() =>
       Promise.resolve({
-        json: () => Promise.resolve(postMocks),
+        json: () => Promise.resolve(postsMocks.posts),
       })
     );
   });
@@ -56,7 +56,7 @@ describe('Async thunk functions correctly', () => {
     global.fetch = defaultFetch;
   });
 
-  test('thunk should receive Array of posts from fetch, and should return a posts object', async () => {
+  test('thunk should receive Array of posts from fetch, and should return a Posts object', async () => {
     const action = fetchPosts(userMocks.user);
 
     const dispatch = jest.fn();
