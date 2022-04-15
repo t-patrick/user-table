@@ -1,1 +1,1 @@
-### Interview assignment for One View Commerce
+### Displaying data from JSONplaceholder
